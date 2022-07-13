@@ -11,7 +11,7 @@ provider:
         platform: linux/amd64
 
 functions:
-  demo:
+  screenshot_proc:
     timeout: 60
     memorySize: 2048
     image:

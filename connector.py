@@ -1,6 +1,13 @@
 import subprocess
+import os
 
-cd = subprocess.run(["cd", "C:\\Users\\Mike\\Desktop\\Python_projects\\mike-docker-selenium-lambda"])
-sls_invoke = subprocess.run(["sls invoke --function demo --raw --data", "'https://www.google.com/'"])
+os.chdir("/home/mike/Desktop/Projects/docker-selenium-lambda")
+command = "sls invoke --function demo --raw --data"
+site_url = " https://www.example.com/"
 
+sls_invoke = subprocess.Popen(command + site_url, shell=True, stdout=subprocess.PIPE,
+                     stderr=subprocess.PIPE)
+stdout, stderr = sls_invoke.communicate()
+
+print(stdout)
 print("Done")
