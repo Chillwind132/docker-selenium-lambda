@@ -5,12 +5,15 @@ import boto3
 import os
 import logging
 from botocore.exceptions import ClientError
+from datetime import datetime
 
 # sls invoke --function screenshot_proc --raw --data https://www.example.com/
 
-format = ".jpg"
-s3_client = boto3.client('s3')
 
+
+format = ".jpg"
+s3_bucket = "stg-uploaded-screenshots-lambda"
+s3_client = boto3.client('s3')
 
 def handler(event=None, context=None):
     options = webdriver.ChromeOptions()
@@ -32,7 +35,8 @@ def handler(event=None, context=None):
     chrome.get(event)
 
     try:
-        file_name = "Picture"
+        today = datetime.now()
+        file_name = "Picture" + str(today)
         path = "/tmp"
         output_path = path + "/output/"
         file_path_full = output_path + file_name
@@ -43,7 +47,7 @@ def handler(event=None, context=None):
             os.makedirs(output_path)
 
         chrome.find_element(By.TAG_NAME, 'body').screenshot(file_path_full)
-        upload = s3_client.upload_file(file_path_full, "uploaded-screenshots-lambda-test", file_name)
+        upload = s3_client.upload_file(file_path_full, s3_bucket, file_name)
     except Exception as e:
         return str(e)
 
