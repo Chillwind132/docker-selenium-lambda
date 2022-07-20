@@ -9,8 +9,6 @@ from datetime import datetime
 
 # sls invoke --function screenshot_proc --raw --data https://www.example.com/
 
-
-
 format = ".jpg"
 s3_bucket = "stg-uploaded-screenshots-lambda"
 s3_client = boto3.client('s3')
